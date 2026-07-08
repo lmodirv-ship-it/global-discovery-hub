@@ -35,9 +35,9 @@
   --color-gold: var(--gold);
   --color-violet: var(--violet);
   --color-surface: var(--surface);
-  --font-display: "Space Grotesk", "Cairo", ui-sans-serif, system-ui;
-  --font-arabic: "Cairo", "Tajawal", ui-sans-serif, system-ui;
-  --font-body: "Inter", "Cairo", ui-sans-serif, system-ui;
+  --font-display: "Space Grotesk", "Cairo", "Noto Color Emoji", ui-sans-serif, system-ui;
+  --font-arabic: "Cairo", "Tajawal", "Noto Color Emoji", ui-sans-serif, system-ui;
+  --font-body: "Inter", "Cairo", "Noto Color Emoji", ui-sans-serif, system-ui;
 }
 
 :root {
