@@ -14,7 +14,307 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      activity_logs: {
+        Row: {
+          action: string
+          actor: string
+          created_at: string
+          id: number
+          target: string | null
+        }
+        Insert: {
+          action: string
+          actor?: string
+          created_at?: string
+          id?: number
+          target?: string | null
+        }
+        Update: {
+          action?: string
+          actor?: string
+          created_at?: string
+          id?: number
+          target?: string | null
+        }
+        Relationships: []
+      }
+      ai_commands: {
+        Row: {
+          created_at: string
+          id: number
+          prompt: string
+          response: string | null
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          prompt: string
+          response?: string | null
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          prompt?: string
+          response?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
+      backups: {
+        Row: {
+          created_at: string
+          id: number
+          kind: string
+          site_id: number | null
+          size_mb: number
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          kind?: string
+          site_id?: number | null
+          size_mb?: number
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          kind?: string
+          site_id?: number | null
+          size_mb?: number
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "backups_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "sites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      databases: {
+        Row: {
+          connections: number
+          created_at: string
+          engine: string
+          id: number
+          name: string
+          site_id: number | null
+          size_mb: number
+          status: string
+        }
+        Insert: {
+          connections?: number
+          created_at?: string
+          engine?: string
+          id?: number
+          name: string
+          site_id?: number | null
+          size_mb?: number
+          status?: string
+        }
+        Update: {
+          connections?: number
+          created_at?: string
+          engine?: string
+          id?: number
+          name?: string
+          site_id?: number | null
+          size_mb?: number
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "databases_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "sites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          body: string | null
+          created_at: string
+          id: number
+          level: string
+          title: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          id?: number
+          level?: string
+          title: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          id?: number
+          level?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      security_logs: {
+        Row: {
+          created_at: string
+          event: string
+          id: number
+          ip: string | null
+          severity: string
+          site_id: number | null
+        }
+        Insert: {
+          created_at?: string
+          event: string
+          id?: number
+          ip?: string | null
+          severity?: string
+          site_id?: number | null
+        }
+        Update: {
+          created_at?: string
+          event?: string
+          id?: number
+          ip?: string | null
+          severity?: string
+          site_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "security_logs_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "sites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      servers: {
+        Row: {
+          cpu_pct: number
+          created_at: string
+          disk_pct: number
+          id: number
+          name: string
+          ram_pct: number
+          region: string
+          status: string
+        }
+        Insert: {
+          cpu_pct?: number
+          created_at?: string
+          disk_pct?: number
+          id?: number
+          name: string
+          ram_pct?: number
+          region?: string
+          status?: string
+        }
+        Update: {
+          cpu_pct?: number
+          created_at?: string
+          disk_pct?: number
+          id?: number
+          name?: string
+          ram_pct?: number
+          region?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      sites: {
+        Row: {
+          category: string
+          created_at: string
+          database_size_mb: number
+          domain: string
+          id: number
+          server_id: number | null
+          ssl_expires_at: string | null
+          status: string
+          storage_size_mb: number
+          title: string | null
+          users_count: number
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          database_size_mb?: number
+          domain: string
+          id?: number
+          server_id?: number | null
+          ssl_expires_at?: string | null
+          status?: string
+          storage_size_mb?: number
+          title?: string | null
+          users_count?: number
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          database_size_mb?: number
+          domain?: string
+          id?: number
+          server_id?: number | null
+          ssl_expires_at?: string | null
+          status?: string
+          storage_size_mb?: number
+          title?: string | null
+          users_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sites_server_id_fkey"
+            columns: ["server_id"]
+            isOneToOne: false
+            referencedRelation: "servers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      system_metrics: {
+        Row: {
+          cpu: number
+          disk: number
+          id: number
+          ram: number
+          recorded_at: string
+          server_id: number | null
+        }
+        Insert: {
+          cpu: number
+          disk: number
+          id?: number
+          ram: number
+          recorded_at?: string
+          server_id?: number | null
+        }
+        Update: {
+          cpu?: number
+          disk?: number
+          id?: number
+          ram?: number
+          recorded_at?: string
+          server_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "system_metrics_server_id_fkey"
+            columns: ["server_id"]
+            isOneToOne: false
+            referencedRelation: "servers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
