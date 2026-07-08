@@ -1,11 +1,19 @@
-import { ReactLenis } from "@studio-freight/react-lenis";
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
+import Lenis from "lenis";
 
 export function SmoothScroll({ children }: { children: ReactNode }) {
-  const Comp = ReactLenis as unknown as (props: { root?: boolean; options?: object; children: ReactNode }) => JSX.Element;
-  return (
-    <Comp root options={{ lerp: 0.08, duration: 1.4, smoothWheel: true }}>
-      {children}
-    </Comp>
-  );
+  useEffect(() => {
+    const lenis = new Lenis({ lerp: 0.08, duration: 1.4, smoothWheel: true });
+    let raf = 0;
+    const loop = (t: number) => {
+      lenis.raf(t);
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => {
+      cancelAnimationFrame(raf);
+      lenis.destroy();
+    };
+  }, []);
+  return <>{children}</>;
 }
