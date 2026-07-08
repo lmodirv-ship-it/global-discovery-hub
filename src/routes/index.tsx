@@ -86,8 +86,12 @@ function Index() {
               </div>
             ))}
           </motion.div>
-        </div>
+        </motion.div>
       </section>
+
+      <Marquee />
+
+      <Showcase />
 
       {/* Categories */}
       <section className="mx-auto max-w-7xl px-6 py-16">
