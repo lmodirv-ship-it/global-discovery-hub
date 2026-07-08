@@ -54,7 +54,7 @@ export function Showcase() {
               <h3 className="mt-3 font-display text-3xl font-black leading-tight md:text-5xl">
                 {p.title}
               </h3>
-              <p className="mt-4 text-muted-foreground">{p.description}</p>
+              <p className="mt-4 text-muted-foreground">{p.domain}</p>
               <div className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary">
                 زيارة الموقع <ArrowUpLeft className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </div>
