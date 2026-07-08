@@ -42,14 +42,10 @@ function Index() {
             <Sparkles className="h-3.5 w-3.5" />
             استوديو رقمي متكامل · HN Group
           </motion.div>
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1 }}
-            className="mt-8 font-display text-5xl font-black leading-[1.05] tracking-tight md:text-7xl lg:text-8xl"
-          >
-            <span className="gold-text">99 موقعاً.</span>
-            <br />
-            رؤية واحدة.
-          </motion.h1>
+          <h1 className="mt-8 font-display text-5xl font-black leading-[1.05] tracking-tight md:text-7xl lg:text-8xl">
+            <RevealText text="99 موقعاً." className="gold-text block" />
+            <RevealText text="رؤية واحدة." className="block" />
+          </h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.25 }}
             className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg"
