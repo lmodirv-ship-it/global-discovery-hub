@@ -1,9 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import { ArrowLeft, Sparkles } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { ProjectCard } from "@/components/site/ProjectCard";
+import { Marquee } from "@/components/site/Marquee";
+import { Showcase } from "@/components/site/Showcase";
+import { RevealText } from "@/components/site/Reveal";
 import { PROJECTS, CATEGORIES, type Category } from "@/data/projects";
 
 export const Route = createFileRoute("/")({
@@ -12,6 +16,12 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const featured = PROJECTS.slice(0, 8);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const heroY = useTransform(scrollYProgress, [0, 1], [0, 200]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
+
   const catCounts = PROJECTS.reduce((acc, p) => {
     acc[p.category] = (acc[p.category] || 0) + 1;
     return acc;
@@ -22,9 +32,9 @@ function Index() {
       <Navbar />
 
       {/* Hero */}
-      <section className="relative overflow-hidden">
+      <section ref={heroRef} className="relative overflow-hidden">
         <div className="absolute inset-0 grid-bg opacity-30 [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]" />
-        <div className="relative mx-auto max-w-7xl px-6 pt-24 pb-32 text-center">
+        <motion.div style={{ y: heroY, opacity: heroOpacity, scale: heroScale }} className="relative mx-auto max-w-7xl px-6 pt-24 pb-32 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
             className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5 text-xs font-medium text-primary"
@@ -32,14 +42,10 @@ function Index() {
             <Sparkles className="h-3.5 w-3.5" />
             استوديو رقمي متكامل · HN Group
           </motion.div>
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1 }}
-            className="mt-8 font-display text-5xl font-black leading-[1.05] tracking-tight md:text-7xl lg:text-8xl"
-          >
-            <span className="gold-text">99 موقعاً.</span>
-            <br />
-            رؤية واحدة.
-          </motion.h1>
+          <h1 className="mt-8 font-display text-5xl font-black leading-[1.05] tracking-tight md:text-7xl lg:text-8xl">
+            <RevealText text="99 موقعاً." className="gold-text block" />
+            <RevealText text="رؤية واحدة." className="block" />
+          </h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.25 }}
             className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg"
@@ -76,8 +82,12 @@ function Index() {
               </div>
             ))}
           </motion.div>
-        </div>
+        </motion.div>
       </section>
+
+      <Marquee />
+
+      <Showcase />
 
       {/* Categories */}
       <section className="mx-auto max-w-7xl px-6 py-16">
