@@ -1,6 +1,8 @@
 import { Link } from "@tanstack/react-router";
+import { useAuth } from "@/hooks/useAuth";
 
 export function Navbar() {
+  const { user, loading } = useAuth();
   return (
     <header className="sticky top-0 z-50 glass border-b border-white/5">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
@@ -17,9 +19,17 @@ export function Navbar() {
           <Link to="/hub" activeProps={{ className: "text-primary" }} className="text-muted-foreground hover:text-foreground transition-colors">المركز</Link>
           <Link to="/contact" activeProps={{ className: "text-primary" }} className="text-muted-foreground hover:text-foreground transition-colors">تواصل</Link>
         </div>
-        <Link to="/projects" className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 hover:opacity-90 transition">
-          اكتشف المعرض
-        </Link>
+        {loading ? (
+          <div className="h-9 w-24 rounded-full bg-white/5 animate-pulse" />
+        ) : user ? (
+          <Link to="/dashboard" className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 hover:opacity-90 transition">
+            حسابي
+          </Link>
+        ) : (
+          <Link to="/auth" className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 hover:opacity-90 transition">
+            دخول
+          </Link>
+        )}
       </nav>
     </header>
   );

@@ -15,6 +15,7 @@ import { Route as HubRouteImport } from './routes/hub'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiPublicBootstrapOwnersRouteImport } from './routes/api/public/bootstrap-owners'
 
 const SitesRoute = SitesRouteImport.update({
   id: '/sites',
@@ -46,6 +47,12 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicBootstrapOwnersRoute =
+  ApiPublicBootstrapOwnersRouteImport.update({
+    id: '/api/public/bootstrap-owners',
+    path: '/api/public/bootstrap-owners',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -54,6 +61,7 @@ export interface FileRoutesByFullPath {
   '/hub': typeof HubRoute
   '/projects': typeof ProjectsRoute
   '/sites': typeof SitesRoute
+  '/api/public/bootstrap-owners': typeof ApiPublicBootstrapOwnersRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +70,7 @@ export interface FileRoutesByTo {
   '/hub': typeof HubRoute
   '/projects': typeof ProjectsRoute
   '/sites': typeof SitesRoute
+  '/api/public/bootstrap-owners': typeof ApiPublicBootstrapOwnersRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,13 +80,36 @@ export interface FileRoutesById {
   '/hub': typeof HubRoute
   '/projects': typeof ProjectsRoute
   '/sites': typeof SitesRoute
+  '/api/public/bootstrap-owners': typeof ApiPublicBootstrapOwnersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/contact' | '/hub' | '/projects' | '/sites'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/hub'
+    | '/projects'
+    | '/sites'
+    | '/api/public/bootstrap-owners'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/contact' | '/hub' | '/projects' | '/sites'
-  id: '__root__' | '/' | '/about' | '/contact' | '/hub' | '/projects' | '/sites'
+  to:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/hub'
+    | '/projects'
+    | '/sites'
+    | '/api/public/bootstrap-owners'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/hub'
+    | '/projects'
+    | '/sites'
+    | '/api/public/bootstrap-owners'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -87,6 +119,7 @@ export interface RootRouteChildren {
   HubRoute: typeof HubRoute
   ProjectsRoute: typeof ProjectsRoute
   SitesRoute: typeof SitesRoute
+  ApiPublicBootstrapOwnersRoute: typeof ApiPublicBootstrapOwnersRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -133,6 +166,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/bootstrap-owners': {
+      id: '/api/public/bootstrap-owners'
+      path: '/api/public/bootstrap-owners'
+      fullPath: '/api/public/bootstrap-owners'
+      preLoaderRoute: typeof ApiPublicBootstrapOwnersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -143,6 +183,7 @@ const rootRouteChildren: RootRouteChildren = {
   HubRoute: HubRoute,
   ProjectsRoute: ProjectsRoute,
   SitesRoute: SitesRoute,
+  ApiPublicBootstrapOwnersRoute: ApiPublicBootstrapOwnersRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
