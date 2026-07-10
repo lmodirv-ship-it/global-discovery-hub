@@ -13,8 +13,13 @@ import { Route as SitesRouteImport } from './routes/sites'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as HubRouteImport } from './routes/hub'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedOwnerRouteImport } from './routes/_authenticated/owner'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as ApiPublicBootstrapOwnersRouteImport } from './routes/api/public/bootstrap-owners'
 
 const SitesRoute = SitesRouteImport.update({
   id: '/sites',
@@ -36,9 +41,18 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -46,47 +60,111 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedOwnerRoute = AuthenticatedOwnerRouteImport.update({
+  id: '/owner',
+  path: '/owner',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const ApiPublicBootstrapOwnersRoute =
+  ApiPublicBootstrapOwnersRouteImport.update({
+    id: '/api/public/bootstrap-owners',
+    path: '/api/public/bootstrap-owners',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/hub': typeof HubRoute
   '/projects': typeof ProjectsRoute
   '/sites': typeof SitesRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/owner': typeof AuthenticatedOwnerRoute
+  '/api/public/bootstrap-owners': typeof ApiPublicBootstrapOwnersRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/hub': typeof HubRoute
   '/projects': typeof ProjectsRoute
   '/sites': typeof SitesRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/owner': typeof AuthenticatedOwnerRoute
+  '/api/public/bootstrap-owners': typeof ApiPublicBootstrapOwnersRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/hub': typeof HubRoute
   '/projects': typeof ProjectsRoute
   '/sites': typeof SitesRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/owner': typeof AuthenticatedOwnerRoute
+  '/api/public/bootstrap-owners': typeof ApiPublicBootstrapOwnersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/contact' | '/hub' | '/projects' | '/sites'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/auth'
+    | '/contact'
+    | '/hub'
+    | '/projects'
+    | '/sites'
+    | '/dashboard'
+    | '/owner'
+    | '/api/public/bootstrap-owners'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/contact' | '/hub' | '/projects' | '/sites'
-  id: '__root__' | '/' | '/about' | '/contact' | '/hub' | '/projects' | '/sites'
+  to:
+    | '/'
+    | '/about'
+    | '/auth'
+    | '/contact'
+    | '/hub'
+    | '/projects'
+    | '/sites'
+    | '/dashboard'
+    | '/owner'
+    | '/api/public/bootstrap-owners'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/about'
+    | '/auth'
+    | '/contact'
+    | '/hub'
+    | '/projects'
+    | '/sites'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/owner'
+    | '/api/public/bootstrap-owners'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
+  AuthRoute: typeof AuthRoute
   ContactRoute: typeof ContactRoute
   HubRoute: typeof HubRoute
   ProjectsRoute: typeof ProjectsRoute
   SitesRoute: typeof SitesRoute
+  ApiPublicBootstrapOwnersRoute: typeof ApiPublicBootstrapOwnersRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -119,11 +197,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -133,16 +225,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/owner': {
+      id: '/_authenticated/owner'
+      path: '/owner'
+      fullPath: '/owner'
+      preLoaderRoute: typeof AuthenticatedOwnerRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/public/bootstrap-owners': {
+      id: '/api/public/bootstrap-owners'
+      path: '/api/public/bootstrap-owners'
+      fullPath: '/api/public/bootstrap-owners'
+      preLoaderRoute: typeof ApiPublicBootstrapOwnersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedOwnerRoute: typeof AuthenticatedOwnerRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedOwnerRoute: AuthenticatedOwnerRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
+  AuthRoute: AuthRoute,
   ContactRoute: ContactRoute,
   HubRoute: HubRoute,
   ProjectsRoute: ProjectsRoute,
   SitesRoute: SitesRoute,
+  ApiPublicBootstrapOwnersRoute: ApiPublicBootstrapOwnersRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
